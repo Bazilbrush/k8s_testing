@@ -1,0 +1,35 @@
+name: Run terraform k8s deployment
+run-name: ${{ github.actor }} is deplying a vanilla k8s cluster
+on: 
+    workflow_dispatch:
+        inputs:
+            tfpath:
+                description: 'TF File Path'     
+                required: false
+                default: 'infra'
+            
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    terraform-validate:
+        uses: Bazilbrush/terraform-templates/.github/workflows/terraform-validate.yml@main
+        with:
+            tfpath: infra
+    
+    terraform-plan:
+        uses: Bazilbrush/terraform-templates/.github/workflows/terraform-plan.yml@main
+        if: ${{ always() }}
+        needs: terraform-validate
+        with:
+            tfpath: infra
+            backend-platform: aws
+            TF_ENV: test
+            AWS_BUCKET: jackbazbackend
+            BACKEND_KEY: tests/k8s-testing/cluster.tfstate
+            AWS_REGION: "eu-west-1"
+            AWS_OIDC_ROLE: 'arn:aws:iam::520686339686:role/github-oidc'
+            AWS_OIDC_SESSION_NAME: 'github-test'
+        secrets:
+            INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
