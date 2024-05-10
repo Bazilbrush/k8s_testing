@@ -60,7 +60,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "in-vpc" {
-  security_group_id = aws_security_group.cluster.id
+  security_group_id = aws_security_group.k8s_cluster.id
 
   cidr_ipv4   = "10.0.0.0/16"
   ip_protocol = -1
@@ -68,14 +68,14 @@ resource "aws_vpc_security_group_ingress_rule" "in-vpc" {
 }
 # weird IP
 resource "aws_vpc_security_group_ingress_rule" "in-vpc-1" {
-  security_group_id = aws_security_group.cluster.id
+  security_group_id = aws_security_group.k8s_cluster.id
 
   cidr_ipv4   = "10.200.0.0/16"
   ip_protocol = -1
 }
 
 resource "aws_vpc_security_group_ingress_rule" "in-ssh" {
-  security_group_id = aws_security_group.cluster.id
+  security_group_id = aws_security_group.k8s_cluster.id
 
   cidr_ipv4   = "0.0.0.0/0"
   ip_protocol = "tcp"
@@ -83,7 +83,7 @@ resource "aws_vpc_security_group_ingress_rule" "in-ssh" {
   to_port     = 22
 }
 resource "aws_vpc_security_group_ingress_rule" "in-k8s-api" {
-  security_group_id = aws_security_group.cluster.id
+  security_group_id = aws_security_group.k8s_cluster.id
 
   cidr_ipv4   = "0.0.0.0/0"
   ip_protocol = "tcp"
@@ -91,7 +91,7 @@ resource "aws_vpc_security_group_ingress_rule" "in-k8s-api" {
   to_port     = 6443
 }
 resource "aws_vpc_security_group_ingress_rule" "in-https" {
-  security_group_id = aws_security_group.cluster.id
+  security_group_id = aws_security_group.k8s_cluster.id
 
   cidr_ipv4   = "0.0.0.0/0"
   ip_protocol = "tcp"
@@ -99,7 +99,7 @@ resource "aws_vpc_security_group_ingress_rule" "in-https" {
   to_port     = 443
 }
 resource "aws_vpc_security_group_ingress_rule" "in-icmp" {
-  security_group_id = aws_security_group.cluster.id
+  security_group_id = aws_security_group.k8s_cluster.id
 
   cidr_ipv4   = "0.0.0.0/0"
   ip_protocol = "icmp"
