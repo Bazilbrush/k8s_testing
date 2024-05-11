@@ -33,7 +33,7 @@ resource "aws_lb_target_group_attachment" "example" {
   }
 
   target_group_arn = aws_lb_target_group.k8s.arn
-  target_id        = each.value.id
+  target_id        = each.value.private_ip
   port             = 6443
 }
 
