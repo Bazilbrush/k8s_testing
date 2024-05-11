@@ -1,7 +1,8 @@
 resource "aws_lb" "k8s-nlb" {
-  name               = "k8-internet_facing"
+  name               = "k8-internet-facing"
   internal           = false
   load_balancer_type = "network"
+  subnets            = [ aws_subnet.cluster_a.id ]
  
   enable_deletion_protection = false
 
