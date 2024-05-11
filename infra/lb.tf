@@ -32,7 +32,7 @@ resource "aws_lb_target_group_attachment" "example" {
     k => v
   }
 
-  target_group_arn = aws_lb_target_group.example.arn
+  target_group_arn = aws_lb_target_group.k8s.arn
   target_id        = each.value.id
   port             = 6443
 }
