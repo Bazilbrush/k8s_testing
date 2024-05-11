@@ -43,6 +43,9 @@ resource "aws_route_table_association" "a" {
 }
 
 
+
+
+
 resource "aws_security_group" "k8s_cluster" {
   name        = "kubernetes"
   description = "sg for k8s raffic management"
