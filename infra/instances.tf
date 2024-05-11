@@ -31,7 +31,7 @@ resource "aws_instance" "controller" {
   key_name = aws_key_pair.deployer.key_name
 
   root_block_device {
-    volume_size = 80
+    volume_size = 40
     encrypted = true
     volume_type = "gp3"
   }
@@ -58,7 +58,7 @@ resource "aws_instance" "worker" {
   key_name = aws_key_pair.deployer.key_name
 
   root_block_device {
-    volume_size = 80
+    volume_size = 40
     encrypted = true
     volume_type = "gp3"
   }
