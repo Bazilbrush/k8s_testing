@@ -33,3 +33,47 @@ jobs:
             AWS_OIDC_SESSION_NAME: 'github-test'
         secrets:
             INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }}
+
+    terraform-apply:
+        uses: Bazilbrush/terraform-templates/.github/workflows/terraform-apply.yml@main
+        if: ${{ always() }}
+        needs: terraform-plan
+        with:
+            tfpath: infra
+            backend-platform: aws
+            TF_ENV: test
+            AWS_BUCKET: jackbazbackend
+            BACKEND_KEY: tests/k8s-testing/cluster.tfstate
+            AWS_REGION: "eu-west-1"
+            AWS_OIDC_ROLE: "arn:aws:iam::520686339686:role/github-oidc"
+            AWS_OIDC_SESSION_NAME: "github-test"
+      
+        
+    terraform-plan-destroy:
+        uses: Bazilbrush/terraform-templates/.github/workflows/terraform-destroy-plan.yml@main
+        if: ${{ always() }}
+        needs: terraform-apply
+        with:
+            tfpath: infra
+            backend-platform: aws
+            TF_ENV: test
+            AWS_BUCKET: jackbazbackend
+            BACKEND_KEY: tests/k8s-testing/cluster.tfstate
+            AWS_REGION: "eu-west-1"
+            AWS_OIDC_ROLE: "arn:aws:iam::520686339686:role/github-oidc"
+            AWS_OIDC_SESSION_NAME: "github-test"
+   
+
+    terraform-destroy:
+        uses: Bazilbrush/terraform-templates/.github/workflows/terraform-destroy.yml@main
+        if: ${{ always() }}
+        needs: terraform-plan-destroy
+        with:
+            tfpath: infra
+            backend-platform: aws
+            TF_ENV: test
+            AWS_BUCKET: jackbazbackend
+            BACKEND_KEY: tests/k8s-testing/cluster.tfstate
+            AWS_REGION: "eu-west-1"
+            AWS_OIDC_ROLE: "arn:aws:iam::520686339686:role/github-oidc"
+            AWS_OIDC_SESSION_NAME: "github-test"
